@@ -8,6 +8,7 @@ import router from '@router'
 import store from '@state/store'
 import '@components/_globals'
 import { createProvider } from './vue-apollo'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
@@ -20,8 +21,9 @@ if (window.Cypress) {
 
 Vue.use(Vuetify, {
   directives: {
-    Ripple
-  }
+    Ripple,
+  },
+  iconfont: 'md',
 })
 
 const app = new Vue({

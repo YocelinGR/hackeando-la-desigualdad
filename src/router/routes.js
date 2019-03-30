@@ -1,8 +1,26 @@
 import store from '@state/store'
 
 export default [
+  // Routes from hacking
   {
-    path: '/',
+    path: '/panicButton',
+    name: 'panicButton',
+    component: () => lazyLoadView(import('@views/saveWomenViews/panicButton')),
+  },
+  {
+    path: '/editNumbers',
+    name: 'editEmergencyNumbers',
+    component: () =>
+      lazyLoadView(import('@views/saveWomenViews/editEmergencyNumbers')),
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => lazyLoadView(import('@views/saveWomenViews/profile')),
+  },
+  // No take in count
+  {
+    path: '/home',
     name: 'home',
     component: () => lazyLoadView(import('@views/home')),
   },
