@@ -82,7 +82,11 @@
         password: '',
         danger : false,
         dialog: false,
-        myPassword: ''
+        myPassword: '',
+        position: {
+          latitde: null,
+          longitude: null
+        },
       }
     },
     computed: {
@@ -94,16 +98,22 @@
         }
       }
     },
-    mounted(){
-      if(localStorage.User){
-        let localStorageUser = JSON.parse(localStorage.User);
-        this.password = localStorageUser.password;
-      }
-    },
     methods: {
       startAlert(){
         console.log('Tu alerta ha sido activada');
         this.danger = true;
+        if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(function(position){
+              this.position.latitde = position.coords.latitude;
+              this.position.longitude = position.coords.longitude;
+              console.log("Latitude: " + this.position.coords.latitude +
+              "Longitude: " + this.position.coords.longitude);
+          });
+          console.log("Latitude: " + this.position.coords.latitude +
+          "Longitude: " + this.position.coords.longitude);
+        } else {
+          console.log('Geolocalización no habilitada');
+        }
       },
       stopAlert(){
         this.dialog = true;

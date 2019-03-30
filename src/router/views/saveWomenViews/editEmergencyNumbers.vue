@@ -200,7 +200,7 @@ export default {
     if(localStorage.Contacs){
       let localContacts = JSON.parse(localStorage.Contacs);
       console.log(localContacts);
-      for(let index =0; index<= localContacts.length; index++){
+      for(let index =0; index < localContacts.length; index++){
         this.contacts.push({
           "name": localContacts[index].name,
           "relativesData": localContacts[index].relativesData,
@@ -209,6 +209,15 @@ export default {
           "notes": localContacts[index].notes
         });
       }
+    } else {
+      this.contacts.push({
+          "name": "911",
+          "relativesData": "Ayuda de Emergencia",
+          "email": "",
+          "phone": "5527258173",
+          "notes": "Llama patrulla o ambulancia"
+        });
+      localStorage.Contacs = JSON.stringify(this.contacts);
     }
   },
   methods:{
@@ -216,9 +225,10 @@ export default {
       console.log('saveData');
       let sizeContactArray = JSON.parse(localStorage.Contacs).length;
       let newContacData = this.newUser;
-      if(sizeContactArray<= 5){
-        console.log(JSON.stringify(newContacData));
-        console.log(sizeContactArray);
+      console.log(JSON.stringify(newContacData));
+      console.log(sizeContactArray);
+      if(sizeContactArray< 5){
+
         this.arrayEnabledAlert = false;
         this.contacts.push({
           "name": newContacData.name,
@@ -233,7 +243,23 @@ export default {
         newContacData.email = '';
         newContacData.phone = '';
         newContacData.notes = '';
-      } else {
+      } else if(sizeContactArray === 0){
+        this.arrayEnabledAlert = false;
+        this.contacts.push({
+          "name": this.newContacData.name,
+          "relativesData": this.newContacData.relativesData,
+          "email": this.newContacData.email,
+          "phone": this.newContacData.phone,
+          "notes": this.newContacData.notes
+        });
+        localStorage.Contacs = JSON.stringify(this.contacts);
+        newContacData.name = '';
+        newContacData.relativesData = '';
+        newContacData.email = '';
+        newContacData.phone = '';
+        newContacData.notes = '';
+      }
+        else {
         this.arrayEnabledAlert = true;
       }
     }
