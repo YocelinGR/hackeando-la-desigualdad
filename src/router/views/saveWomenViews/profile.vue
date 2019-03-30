@@ -22,12 +22,19 @@
         ></VTextField>
         <VTextField
           v-model="edad"
-          :error-messages="nameErrors"
           :counter="2"
           label="Edad"
           required
           @input="$v.edad.$touch()"
           @blur="$v.edad.$touch()"
+        ></VTextField>
+        <VTextField
+          v-model="password"
+          :counter="10"
+          label="Contraseña"
+          required
+          @input="$v.password.$touch()"
+          @blur="$v.password.$touch()"
         ></VTextField>
 
         <VBtn @click="submit">Actualiza</VBtn>
@@ -85,10 +92,12 @@
       name: '',
       email: '',
       edad: '',
+      password: '',
       myUser: {
         name: '',
         email: '',
         edad: '',
+        password: ''
       }
     }),
     computed: {
@@ -114,9 +123,11 @@
         this.myUser.name = localStorageUser.name;
         this.myUser.email = localStorageUser.email;
         this.myUser.edad = localStorageUser.edad;
+        this.myUser.password = localStorageUser.password;
         this.name = localStorageUser.name;
         this.email = localStorageUser.email;
         this.edad = localStorageUser.edad;
+        this.password = localStorageUser.password;
       }
     },
 
@@ -126,6 +137,7 @@
         this.myUser.name = this.name;
         this.myUser.email = this.email;
         this.myUser.edad = this.edad;
+        this.myUser.password = this.password;
         localStorage.User = JSON.stringify(this.myUser);
       },
       clear () {
@@ -133,6 +145,7 @@
         this.name = '';
         this.email = '';
         this.edad = '';
+        this.password = '';
       }
     }
   }

@@ -10,12 +10,36 @@
                 <VIcon>touch_app</VIcon>
               </VBtn>
             </div>
-            <VBtn outline round color="indigo" @click="stopAlert">
+            <VBtn v-if="danger" outline round color="indigo" @click="stopAlert">
               <VIcon left dark>verified_user</VIcon>
               Desactiva la alarma</VBtn>
           </VContainer>
       </VLayout>
-       <VCard height="60px" class="bootom-bar">
+        <!-- Modal alarma -->
+         <VDialog v-model="dialog" persistent max-width="600px">
+        <VCard>
+          <VCardTitle>
+            <span class="headline">Ingresa tu contraseña</span>
+          </VCardTitle>
+          <VCardText>
+            <VContainer grid-list-md>
+              <VLayout wrap>
+                <VFlex xs12 sm6 md4>
+                  <VTextField v-model="myPassword" label="Contraseña*" required></VTextField>
+                </VFlex>
+              </VLayout>
+            </VContainer>
+            <small>*Para asegurarnos de tu bienestar, ingresa tu contraseña</small>
+          </VCardText>
+          <VCardActions>
+            <VSpacer></VSpacer>
+            <VBtn color="blue darken-1" flat @click="dialog = false">Cerrar</VBtn>
+            <VBtn color="blue darken-1" flat @click="confirmPassword">Enviar</VBtn>
+          </VCardActions>
+        </VCard>
+         </VDialog>
+        <!--  -->
+       <VCard height="60px" class="bootom-bar" v>
               <VBottomNav
                 :active.sync="bottomNav"
                 :color="color"
@@ -54,10 +78,13 @@
     data () {
       return {
         bottomNav: 2,
-        time: 0
+        time: 0,
+        password: '',
+        danger : false,
+        dialog: false,
+        myPassword: ''
       }
     },
-
     computed: {
       color () {
         switch (this.bottomNav) {
@@ -67,13 +94,30 @@
         }
       }
     },
-
+    mounted(){
+      if(localStorage.User){
+        let localStorageUser = JSON.parse(localStorage.User);
+        this.password = localStorageUser.password;
+      }
+    },
     methods: {
       startAlert(){
         console.log('Tu alerta ha sido activada');
+        this.danger = true;
       },
       stopAlert(){
-        console.log('Nos alegra que estes bien!.');
+        this.dialog = true;
+      },
+      confirmPassword(){
+        if(this.myPassword === this.password){
+          console.log('Nos alegra que estes bien!.');
+          this.danger = false;
+          this.dialog = false;
+        } else {
+          console.log('No podemos desactivar la alerta!.');
+          this.danger = true;
+          this.dialog = false;
+        }
       }
     }
   }
