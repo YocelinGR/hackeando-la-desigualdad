@@ -79,14 +79,13 @@
       return {
         bottomNav: 2,
         time: 0,
-        password: '',
+        password: JSON.parse(localStorage.User).password,
         danger : false,
         dialog: false,
         myPassword: '',
-        position: {
-          latitde: null,
-          longitude: null
-        },
+        // accountSid : 'AC2fe67bf8921cfbae5ca0bbd580a3e428',
+        // authToken : '571a907918d9ea7b1fb65ebddc49d346',
+        // client : require('twilio')(this.accountSid, this.authToken)
       }
     },
     computed: {
@@ -103,14 +102,14 @@
         console.log('Tu alerta ha sido activada');
         this.danger = true;
         if(navigator.geolocation){
-          navigator.geolocation.getCurrentPosition(function(position){
-              this.position.latitde = position.coords.latitude;
-              this.position.longitude = position.coords.longitude;
-              console.log("Latitude: " + this.position.coords.latitude +
-              "Longitude: " + this.position.coords.longitude);
+          navigator.geolocation.getCurrentPosition(function(myPosition){
+              console.log("Latitude: " + myPosition.coords.latitude +
+              "Longitude: " + myPosition.coords.longitude);
+              localStorage.latitde = JSON.stringify(myPosition.coords.latitude);
+              localStorage.longitude = JSON.stringify(myPosition.coords.longitude);
+              console.log("Latitude: " + JSON.parse(`${localStorage}`) +
+              "Longitude: " + JSON.parse(`${localStorage}`));
           });
-          console.log("Latitude: " + this.position.coords.latitude +
-          "Longitude: " + this.position.coords.longitude);
         } else {
           console.log('Geolocalización no habilitada');
         }
