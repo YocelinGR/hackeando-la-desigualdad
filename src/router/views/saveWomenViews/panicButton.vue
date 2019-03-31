@@ -61,13 +61,13 @@
                     <VIcon>settings_phone</VIcon>
                   </RouterLink>
                 </VBtn>
+                  <VBtn dark>
+                    <span>Perfil</span>
+                    <RouterLink to="/profile" href="#" class="white--text font-weight-bold" data-testid="btn-link">
+                      <VIcon>face</VIcon>
+                    </RouterLink>
+                  </VBtn>
 
-                <VBtn dark>
-                  <span>Perfil</span>
-                  <RouterLink to="/profile" href="#" class="white--text font-weight-bold" data-testid="btn-link">
-                    <VIcon>face</VIcon>
-                  </RouterLink>
-                </VBtn>
               </VBottomNav>
             </VCard>
   </VApp>
@@ -84,8 +84,8 @@
         dialog: false,
         myPassword: '',
         // accountSid : 'AC2fe67bf8921cfbae5ca0bbd580a3e428',
-        // authToken : '571a907918d9ea7b1fb65ebddc49d346',
-        // client : require('twilio')(this.accountSid, this.authToken)
+        // authToken : ,
+        // client : require('twilio')(this.accountSid, thi'571a907918d9ea7b1fb65ebddc49d346's.authToken)
       }
     },
     computed: {
@@ -98,17 +98,47 @@
       }
     },
     methods: {
+      sendSMS(){
+        console.log('Entrada');
+        const phoneServer = '+12039416043';
+        const phoneAlert = '+525527258173';
+        const mySMS = JSON.parse(localStorage.getItem("User")).name;
+        const lat = JSON.parse(localStorage.getItem("latitde"));
+        const long = JSON.parse(localStorage.getItem("longitude"));
+        const alertMessage = `Estas recibiendo este mensaje por que ${mySMS}
+            esta en situacion de alerta. Su posicion es: ${lat}, ${long}`;
+        const fetchServer = ({ phoneAlert, alertMessage}) => {
+          console.log('Se llama');
+          fetch('http://localhost:5000/message', {
+            method: 'post',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ body:alertMessage, to: phoneAlert , from: phoneServer})
+          })
+            .then(function (res) {
+              console.log(res);
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+
+        };
+         fetchServer({ phoneAlert, alertMessage });
+      },
       startAlert(){
         console.log('Tu alerta ha sido activada');
         this.danger = true;
+        const _this = this;
         if(navigator.geolocation){
           navigator.geolocation.getCurrentPosition(function(myPosition){
               console.log("Latitude: " + myPosition.coords.latitude +
               "Longitude: " + myPosition.coords.longitude);
               localStorage.latitde = JSON.stringify(myPosition.coords.latitude);
               localStorage.longitude = JSON.stringify(myPosition.coords.longitude);
-              console.log("Latitude: " + JSON.parse(`${localStorage}`) +
-              "Longitude: " + JSON.parse(`${localStorage}`));
+              // console.log("Latitude: " + JSON.parse(`${localStorage}`) +
+              // "Longitude: " + JSON.parse(`${localStorage}`));
+              _this.sendSMS();
           });
         } else {
           console.log('Geolocalización no habilitada');
