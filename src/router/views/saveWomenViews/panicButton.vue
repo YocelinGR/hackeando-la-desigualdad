@@ -15,7 +15,7 @@
               Desactiva la alarma</VBtn>
           </VContainer>
       </VLayout>
-        <!-- Modal alarma -->
+        <!-- Modal alarm -->
          <VDialog v-model="dialog" persistent max-width="600px">
         <VCard>
           <VCardTitle>
